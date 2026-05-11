@@ -92,14 +92,19 @@ else
 local   all             all                                     trust
 
 # SSL с проверкой клиентского сертификата
-hostssl all             all             0.0.0.0/0               cert
-hostssl all             all             ::0/0                   cert
+hostssl all             all             0.0.0.0/0               cert map=ssl_map
+hostssl all             all             ::0/0                   cert map=ssl_map
 
 # Резервный метод с паролем
 # hostssl all           all             0.0.0.0/0               scram-sha-256
 EOF
     chown postgres:postgres "$PGDATA/pg_hba.conf"
     echo "Создан pg_hba.conf"
+fi
+
+if [ -f /etc/postgresql/pg_ident.conf ]; then
+    cp /etc/postgresql/pg_ident.conf "$PGDATA/pg_ident.conf"
+    chown postgres:postgres "$PGDATA/pg_ident.conf"
 fi
 
 # Перезагружаем PostgreSQL для применения настроек

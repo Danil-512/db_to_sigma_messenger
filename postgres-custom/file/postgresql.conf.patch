@@ -1,9 +1,0 @@
-# postgres-custom/file/postgresql.conf.patch
-ssl = on
-ssl_ca_file = '/etc/postgresql/certs/ca.crt'
-ssl_cert_file = '/etc/postgresql/certs/server.crt'
-ssl_key_file = '/etc/postgresql/certs/server.key'
-ssl_prefer_server_ciphers = on
-#
-# Современные безопасные шифры
-ssl_ciphers = 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'

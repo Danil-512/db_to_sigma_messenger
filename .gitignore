@@ -1,2 +1,31 @@
-nginx_20*
 .env
+
+# Все приватные ключи и сертификаты
+certs/ca/*.key
+certs/servers/**/*.key
+certs/clients/**/*.key
+certs/clients/**/*.pfx
+
+# Сами сертификаты
+certs/ca/*.crt
+certs/servers/**/*.crt
+certs/clients/**/*.crt
+
+# Скопированные сертификаты в postgres-custom
+postgres-custom/*/server.key
+postgres-custom/*/server.crt
+postgres-custom/*/ca.crt
+
+# pg_ident.conf содержит маппинг пользователей — возможно, не стоит светить
+postgres-custom/*/pg_ident.conf
+
+# Данные Docker-томов
+docker_volumes/
+
+# Временные файлы
+*.swp
+*.swo
+*~
+
+# Серийные номера сертификатов
+certs/ca/*.srl

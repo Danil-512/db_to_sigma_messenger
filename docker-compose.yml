@@ -27,6 +27,7 @@ services:
       - ./postgres-custom/user/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/user/ca.crt:/etc/postgresql/certs/ca.crt:ro
       - ./postgres-custom/user/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./postgres-custom/user/pg_ident.conf:/etc/postgresql/pg_ident.conf:ro
     #
     networks:
       - sigma_db_network
@@ -63,6 +64,7 @@ services:
       - ./postgres-custom/file/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/file/ca.crt:/etc/postgresql/certs/ca.crt:ro
       - ./postgres-custom/file/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./postgres-custom/file/pg_ident.conf:/etc/postgresql/pg_ident.conf:ro
     #
     networks:
       - sigma_db_network
@@ -99,6 +101,7 @@ services:
       - ./postgres-custom/chats/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/chats/ca.crt:/etc/postgresql/certs/ca.crt:ro
       - ./postgres-custom/chats/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./postgres-custom/chats/pg_ident.conf:/etc/postgresql/pg_ident.conf:ro
     #
     networks:
       - sigma_db_network
@@ -135,6 +138,7 @@ services:
       - ./postgres-custom/auth/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/auth/ca.crt:/etc/postgresql/certs/ca.crt:ro
       - ./postgres-custom/auth/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./postgres-custom/auth/pg_ident.conf:/etc/postgresql/pg_ident.conf:ro
     #
     networks:
       - sigma_db_network
