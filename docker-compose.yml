@@ -1,0 +1,139 @@
+# docker-compose.yml для бд
+#
+# Блок services - описание всех контейнеров
+services:
+  #
+  # PostgreSQL для юзер сервиса
+  postgres_user:
+    image: postgres:18.3-alpine
+    #
+    container_name: postgres-sigma-user
+    #
+    environment:
+      - POSTGRES_DB=${POSTGRESQL_USER_DATABASE}
+      - POSTGRES_USER=${POSTGRESQL_USER_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRESQL_USER_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    #
+    ports:
+      - "${POSTGRESQL_USER_PORT}:5432"
+    #
+    volumes:
+      - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_user:/var/lib/postgresql/data/pgdata
+    #
+    networks:
+      - sigma_db_network
+    #
+    restart: unless-stopped
+    #
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"] # POSTGRES_USER уже существует в контейнере
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  #
+  # PostgreSQL для файл сервиса
+  postgres_file:
+    image: postgres:18.3-alpine
+    #
+    container_name: postgres-sigma-file
+    #
+    environment:
+      - POSTGRES_DB=${POSTGRESQL_FILE_DATABASE}
+      - POSTGRES_USER=${POSTGRESQL_FILE_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRESQL_FILE_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    #
+    ports:
+      - "${POSTGRESQL_FILE_PORT}:5432"
+    #
+    volumes:
+      - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_file:/var/lib/postgresql/data/pgdata
+    #
+    networks:
+      - sigma_db_network
+    #
+    restart: unless-stopped
+    #
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"] # POSTGRES_USER уже существует в контейнере
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  #
+  # PostgreSQL для сервиса чатов
+  postgres_chats:
+    image: postgres:18.3-alpine
+    #
+    container_name: postgres-sigma-chats
+    #
+    environment:
+      - POSTGRES_DB=${POSTGRESQL_CHATS_DATABASE}
+      - POSTGRES_USER=${POSTGRESQL_CHATS_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRESQL_CHATS_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    #
+    ports:
+      - "${POSTGRESQL_CHATS_PORT}:5432"
+    #
+    volumes:
+      - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_chats:/var/lib/postgresql/data/pgdata
+    #
+    networks:
+      - sigma_db_network
+    #
+    restart: unless-stopped
+    #
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"] # POSTGRES_USER уже существует в контейнере
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  #
+  # PostgreSQL для сервиса аутентификации
+  postgres_auth:
+    image: postgres:18.3-alpine
+    #
+    container_name: postgres-sigma-users
+    #
+    environment:
+      - POSTGRES_DB=${POSTGRESQL_AUTH_DATABASE}
+      - POSTGRES_USER=${POSTGRESQL_AUTH_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRESQL_AUTH_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    #
+    ports:
+      - "${POSTGRESQL_AUTH_PORT}:5432"
+    #
+    volumes:
+      - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_users:/var/lib/postgresql/data/pgdata
+    #
+    networks:
+      - sigma_db_network
+    #
+    restart: unless-stopped
+    #
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"] # POSTGRES_USER уже существует в контейнере
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+#
+#
+#
+# Описание сетей
+networks:
+  sigma_db_network:
+    name: sigma_db_network
+    driver: bridge
+    #
+    #internal: true # Запрет доступа в интернет
+    #
+    ipam:
+      config:
+        - subnet: 172.32.0.0/24
+          gateway: 172.32.0.1
