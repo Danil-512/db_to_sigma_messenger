@@ -5,7 +5,7 @@ services:
   #
   # PostgreSQL для юзер сервиса
   postgres_user:
-    image: postgres:18.3-alpine
+    image: postgres:18.3
     #
     container_name: postgres-sigma-user
     #
@@ -20,6 +20,13 @@ services:
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_user:/var/lib/postgresql/data/pgdata
+      # Кастомный скрипт инициализации
+      - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      # Сертификаты и конфиги (только чтение)
+      - ./postgres-custom/user/server.crt:/etc/postgresql/certs/server.crt:ro
+      - ./postgres-custom/user/server.key:/etc/postgresql/certs/server.key:ro
+      - ./postgres-custom/user/ca.crt:/etc/postgresql/certs/ca.crt:ro
+      - ./postgres-custom/user/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
     #
     networks:
       - sigma_db_network
@@ -35,7 +42,7 @@ services:
   #
   # PostgreSQL для файл сервиса
   postgres_file:
-    image: postgres:18.3-alpine
+    image: postgres:18.3
     #
     container_name: postgres-sigma-file
     #
@@ -50,6 +57,12 @@ services:
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_file:/var/lib/postgresql/data/pgdata
+      # Кастомный скрипт инициализации
+      - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      - ./postgres-custom/file/server.crt:/etc/postgresql/certs/server.crt:ro
+      - ./postgres-custom/file/server.key:/etc/postgresql/certs/server.key:ro
+      - ./postgres-custom/file/ca.crt:/etc/postgresql/certs/ca.crt:ro
+      - ./postgres-custom/file/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
     #
     networks:
       - sigma_db_network
@@ -65,7 +78,7 @@ services:
   #
   # PostgreSQL для сервиса чатов
   postgres_chats:
-    image: postgres:18.3-alpine
+    image: postgres:18.3
     #
     container_name: postgres-sigma-chats
     #
@@ -80,6 +93,12 @@ services:
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_chats:/var/lib/postgresql/data/pgdata
+      # Кастомный скрипт инициализации
+      - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      - ./postgres-custom/chats/server.crt:/etc/postgresql/certs/server.crt:ro
+      - ./postgres-custom/chats/server.key:/etc/postgresql/certs/server.key:ro
+      - ./postgres-custom/chats/ca.crt:/etc/postgresql/certs/ca.crt:ro
+      - ./postgres-custom/chats/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
     #
     networks:
       - sigma_db_network
@@ -95,7 +114,7 @@ services:
   #
   # PostgreSQL для сервиса аутентификации
   postgres_auth:
-    image: postgres:18.3-alpine
+    image: postgres:18.3
     #
     container_name: postgres-sigma-users
     #
@@ -110,6 +129,12 @@ services:
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_users:/var/lib/postgresql/data/pgdata
+      # Кастомный скрипт инициализации
+      - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      - ./postgres-custom/auth/server.crt:/etc/postgresql/certs/server.crt:ro
+      - ./postgres-custom/auth/server.key:/etc/postgresql/certs/server.key:ro
+      - ./postgres-custom/auth/ca.crt:/etc/postgresql/certs/ca.crt:ro
+      - ./postgres-custom/auth/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
     #
     networks:
       - sigma_db_network
