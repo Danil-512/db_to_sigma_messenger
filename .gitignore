@@ -30,3 +30,7 @@ docker_volumes/
 
 # Серийные номера сертификатов
 certs/ca/*.srl
+Accept:
+GET
+Host:
+User-Agent:
