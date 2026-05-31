@@ -14,15 +14,23 @@ services:
       - POSTGRES_USER=${POSTGRESQL_USER_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRESQL_USER_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pgdata
+      - TZ=Asia/Yekaterinburg
+      # Пользователь для работы с бэком
+      - APP_DB_USER=${APP_USER_USER}
+      - APP_DB_PASSWORD=${APP_USER_PASSWORD}
     #
     ports:
       - "${POSTGRESQL_USER_PORT}:5432"
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_user:/var/lib/postgresql/data/pgdata
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       # Кастомный скрипт инициализации
       - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
-      # Сертификаты и конфиги (только чтение)
+      # Скрипт создания пользователя с ограниченными правами для бэка
+      - ./scripts/create_serv_users.sh:/docker-entrypoint-initdb.d/1-create_serv_users.sh:ro
+      # Сертификаты
       - ./postgres-custom/user/server.crt:/etc/postgresql/certs/server.crt:ro
       - ./postgres-custom/user/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/user/ca.crt:/etc/postgresql/certs/ca.crt:ro
@@ -52,14 +60,23 @@ services:
       - POSTGRES_USER=${POSTGRESQL_FILE_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRESQL_FILE_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pgdata
+      - TZ=Asia/Yekaterinburg
+      # Пользователь для работы с бэком
+      - APP_DB_USER=${APP_FILE_USER}
+      - APP_DB_PASSWORD=${APP_FILE_PASSWORD}
     #
     ports:
       - "${POSTGRESQL_FILE_PORT}:5432"
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_file:/var/lib/postgresql/data/pgdata
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       # Кастомный скрипт инициализации
       - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      # Скрипт создания пользователя с ограниченными правами для бэка
+      - ./scripts/create_serv_users.sh:/docker-entrypoint-initdb.d/1-create_serv_users.sh:ro
+      # Сертификаты
       - ./postgres-custom/file/server.crt:/etc/postgresql/certs/server.crt:ro
       - ./postgres-custom/file/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/file/ca.crt:/etc/postgresql/certs/ca.crt:ro
@@ -89,14 +106,23 @@ services:
       - POSTGRES_USER=${POSTGRESQL_CHATS_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRESQL_CHATS_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pgdata
+      - TZ=Asia/Yekaterinburg
+      # Пользователь для работы с бэком
+      - APP_DB_USER=${APP_CHATS_USER}
+      - APP_DB_PASSWORD=${APP_CHATS_PASSWORD}
     #
     ports:
       - "${POSTGRESQL_CHATS_PORT}:5432"
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_chats:/var/lib/postgresql/data/pgdata
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       # Кастомный скрипт инициализации
       - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      # Скрипт создания пользователя с ограниченными правами для бэка
+      - ./scripts/create_serv_users.sh:/docker-entrypoint-initdb.d/1-create_serv_users.sh:ro
+      # Сертификаты
       - ./postgres-custom/chats/server.crt:/etc/postgresql/certs/server.crt:ro
       - ./postgres-custom/chats/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/chats/ca.crt:/etc/postgresql/certs/ca.crt:ro
@@ -126,14 +152,23 @@ services:
       - POSTGRES_USER=${POSTGRESQL_AUTH_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRESQL_AUTH_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pgdata
+      - TZ=Asia/Yekaterinburg
+      # Пользователь для работы с бэком
+      - APP_DB_USER=${APP_AUTH_USER}
+      - APP_DB_PASSWORD=${APP_AUTH_PASSWORD}
     #
     ports:
       - "${POSTGRESQL_AUTH_PORT}:5432"
     #
     volumes:
       - /all_to_docker/docker_volumes/postgres_sigma/ps_sig_users:/var/lib/postgresql/data/pgdata
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
       # Кастомный скрипт инициализации
       - ./scripts/configure-ssl.sh:/docker-entrypoint-initdb.d/configure-ssl.sh:ro
+      # Скрипт создания пользователя с ограниченными правами для бэка
+      - ./scripts/create_serv_users.sh:/docker-entrypoint-initdb.d/1-create_serv_users.sh:ro
+      # Сертификаты
       - ./postgres-custom/auth/server.crt:/etc/postgresql/certs/server.crt:ro
       - ./postgres-custom/auth/server.key:/etc/postgresql/certs/server.key:ro
       - ./postgres-custom/auth/ca.crt:/etc/postgresql/certs/ca.crt:ro
